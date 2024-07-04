@@ -2,6 +2,8 @@ package com.distancecalculator.distance_calculator_api.service;
 
 import org.springframework.stereotype.Service;
 
+import com.distancecalculator.distance_calculator_api.dto.DistanceDTO;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -13,8 +15,10 @@ public class HaversineDistanceCalculator implements DistanceCalculator {
 
     private static final DecimalFormat df = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.US));
 
+    private DistanceDTO distanceDTO = new DistanceDTO();
+
     @Override
-    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    public DistanceDTO calculateDistance(double lat1, double lon1, double lat2, double lon2) {
         double lat1Rad = Math.toRadians(lat1);
         double lon1Rad = Math.toRadians(lon1);
         double lat2Rad = Math.toRadians(lat2);
@@ -30,7 +34,10 @@ public class HaversineDistanceCalculator implements DistanceCalculator {
 
         double distance = EARTH_RADIUS_KM * c;
 
-        return formattedDistance(distance);
+        distanceDTO.setDistance(formattedDistance(distance));
+        distanceDTO.setUnit("KM");
+
+        return distanceDTO;
     }
 
     /**
