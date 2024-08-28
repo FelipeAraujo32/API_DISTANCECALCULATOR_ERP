@@ -1,10 +1,19 @@
 package com.distancecalculator.distance_calculator_api.dto;
 
-public class DistanceDTO {
+import java.util.UUID;
+
+public class DistanceCalculatedDto {
     
+    private UUID orderId;
     private double distance;
     private String unit;
     
+    public UUID getOrderId() {
+        return orderId;
+    }
+    public void setOrderId(UUID orderId) {
+        this.orderId = orderId;
+    }
     public double getDistance() {
         return distance;
     }
@@ -17,5 +26,8 @@ public class DistanceDTO {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+
+    
 
 }
