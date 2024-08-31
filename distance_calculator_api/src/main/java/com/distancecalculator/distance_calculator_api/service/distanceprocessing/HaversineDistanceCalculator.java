@@ -18,7 +18,15 @@ public class HaversineDistanceCalculator {
     public HaversineDistanceCalculator() {
     }
 
-    public DistanceModel calculateDistance(ApiCepClientDTO product, ApiCepClientDTO customer) {
+    public DistanceModel calculateAndCreateDistanceModel(ApiCepClientDTO product, ApiCepClientDTO customer){
+        double distance = calculateDistance(product, customer);
+        DistanceModel distanceModel = new DistanceModel();
+        distanceModel.setDistance(formattedDistance(distance));
+        distanceModel.setUnit("KM");
+        return distanceModel;
+    }
+
+    public double calculateDistance(ApiCepClientDTO product, ApiCepClientDTO customer) {
         double lat1Rad = Math.toRadians(product.getLat());
         double lon1Rad = Math.toRadians(product.getLng());
         double lat2Rad = Math.toRadians(customer.getLat());
@@ -31,18 +39,13 @@ public class HaversineDistanceCalculator {
                 + Math.cos(lat1Rad) * Math.cos(lat2Rad)
                         * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        double distance = EARTH_RADIUS_KM * c;
-
-        DistanceModel distanceModel = new DistanceModel();
-        distanceModel.setDistance(distance);
-        distanceModel.setUnit("KM");
-        return distanceModel;
+        
+        return EARTH_RADIUS_KM * c;
     }
 
     public double formattedDistance(double distance) {
-        String fomorttedString = df.format(distance);
-        double formattedDistanceDouble = Double.parseDouble(fomorttedString);
+        String formattedString = df.format(distance);
+        double formattedDistanceDouble = Double.parseDouble(formattedString);
         return formattedDistanceDouble;
     }
 }

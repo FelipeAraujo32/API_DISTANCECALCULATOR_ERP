@@ -12,22 +12,17 @@ public class BindingConfig {
 
     @Bean
     public Binding customerCepRequestBinding(Queue customerCepRequestQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(customerCepRequestQueue).to(freightExchange).with("customer.cep.request");
+        return BindingBuilder.bind(customerCepRequestQueue).to(freightExchange).with("zipcode.request");
     }
 
     @Bean
     public Binding customerCepResponseBinding(Queue customerCepResponseQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(customerCepResponseQueue).to(freightExchange).with("customer.cep.response");
-    }
-
-    @Bean
-    public Binding productCepRequestBinding(Queue productCepRequestQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(productCepRequestQueue).to(freightExchange).with("product.cep.request");
+        return BindingBuilder.bind(customerCepResponseQueue).to(freightExchange).with("customer.zipcode.response");
     }
 
     @Bean
     public Binding productCepResponseBinding(Queue productCepResponseQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(productCepResponseQueue).to(freightExchange).with("product.cep.response");
+        return BindingBuilder.bind(productCepResponseQueue).to(freightExchange).with("product.zipcode.response");
     }
 
     @Bean

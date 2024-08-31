@@ -1,4 +1,4 @@
-package com.distancecalculator.distance_calculator_api.service.distanceprocessing;
+package com.distancecalculator.distance_calculator_api.service.zipcodeprocessing;
 
 import org.springframework.stereotype.Service;
 

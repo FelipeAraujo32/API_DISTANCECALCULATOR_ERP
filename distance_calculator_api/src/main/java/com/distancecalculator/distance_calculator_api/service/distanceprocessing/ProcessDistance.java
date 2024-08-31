@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import com.distancecalculator.distance_calculator_api.dto.ApiCepClientDTO;
 import com.distancecalculator.distance_calculator_api.models.DistanceModel;
+import com.distancecalculator.distance_calculator_api.service.zipcodeprocessing.SearchZipCode;
 
 @Service
 public class ProcessDistance {
@@ -16,13 +17,10 @@ public class ProcessDistance {
         this.haversineDistanceCalculator = haversineDistanceCalculator;
     }
 
-    public DistanceModel calculateAndProcessDistance(DistanceModel distanceModel){
-        ApiCepClientDTO cepProducut = searchZipCode.getCepAPI(distanceModel.getProductCep());
-        ApiCepClientDTO cepCustomer = searchZipCode.getCepAPI(distanceModel.getCustomerCep());
-        return haversineDistanceCalculator.calculateDistance(cepProducut, cepCustomer);
+    public DistanceModel calculateAndProcessDistance(DistanceModel distanceModel) {
+        ApiCepClientDTO cepProducut = searchZipCode.getCepAPI(distanceModel.getProductZipCode());
+        ApiCepClientDTO cepCustomer = searchZipCode.getCepAPI(distanceModel.getCustomerZipCode());
+        return haversineDistanceCalculator.calculateAndCreateDistanceModel(cepProducut, cepCustomer);
 
-        
     }
 }
-
-

@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-@Entity(name = "distanceCalculated")
+@Entity(name = "distancecalculated")
 @Table(name = "distance_erp")
 public class DistanceModel {
 
@@ -26,21 +26,21 @@ public class DistanceModel {
     @Column(name = "unit")
     private String unit;
 
-    @Column(name = "customer_cep")
-    private String customerCep;
+    @Column(name = "customer_ZipCode")
+    private String customerZipCode;
 
-    @Column(name = "product_cep")
-    private String productCep;
+    @Column(name = "product_ZipCode")
+    private String productZipCode;
 
     public DistanceModel() {
     }
 
-    public DistanceModel(UUID orderId, double distance, String unit, String customerCep, String productCep) {
+    public DistanceModel(UUID orderId, double distance, String unit, String customerZipCode, String productZipCode) {
         this.orderId = orderId;
         this.distance = distance;
         this.unit = unit;
-        this.customerCep = customerCep;
-        this.productCep = productCep;
+        this.customerZipCode = customerZipCode;
+        this.productZipCode = productZipCode;
     }
 
     public UUID getDistanceId() {
@@ -75,20 +75,20 @@ public class DistanceModel {
         this.unit = unit;
     }
 
-    public String getCustomerCep() {
-        return customerCep;
+    public String getCustomerZipCode() {
+        return customerZipCode;
     }
 
-    public void setCustomerCep(String customerCep) {
-        this.customerCep = customerCep;
+    public void setCustomerZipCode(String customerZipCode) {
+        this.customerZipCode = customerZipCode;
     }
 
-    public String getProductCep() {
-        return productCep;
+    public String getProductZipCode() {
+        return productZipCode;
     }
 
-    public void setProductCep(String productCep) {
-        this.productCep = productCep;
+    public void setProductZipCode(String productZipCode) {
+        this.productZipCode = productZipCode;
     }
 
 }

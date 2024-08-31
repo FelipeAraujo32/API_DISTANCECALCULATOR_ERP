@@ -1,11 +1,11 @@
-package com.distancecalculator.distance_calculator_api.convert.cepconvert;
+package com.distancecalculator.distance_calculator_api.convert.zipcodeconvert;
 
 import com.distancecalculator.distance_calculator_api.dto.OrderModelDto;
 import com.distancecalculator.distance_calculator_api.dto.cepdto.CepProducerDto;
 
-public class CepConvert {
+public class ZipCodeConvert {
     
-    public CepProducerDto toCepProducerDto(OrderModelDto orderModelDto){
+    public CepProducerDto toZipCodeProducer(OrderModelDto orderModelDto){
         CepProducerDto cepProducerDto = new CepProducerDto();
         cepProducerDto.setOrderId(orderModelDto.getOrderId());
         cepProducerDto.setProductId(orderModelDto.getProductId());

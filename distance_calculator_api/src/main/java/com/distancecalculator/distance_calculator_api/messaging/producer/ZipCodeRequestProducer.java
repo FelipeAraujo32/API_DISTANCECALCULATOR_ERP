@@ -6,18 +6,18 @@ import org.springframework.stereotype.Component;
 import com.distancecalculator.distance_calculator_api.dto.cepdto.CepProducerDto;
 
 @Component
-public class CustomerCepRequestProducer {
+public class ZipCodeRequestProducer {
     
     private final RabbitTemplate rabbitTemplate;
 
-    public CustomerCepRequestProducer(RabbitTemplate rabbitTemplate) {
+    public ZipCodeRequestProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void customerCepRequest(CepProducerDto cepProducerDto){
+    public void zipCodeRequest(CepProducerDto cepProducerDto){
             rabbitTemplate.convertAndSend(
                 "distance.exchange",
-                "customer.cep.request",
+                "zipcode.request",
                 cepProducerDto
             );
     

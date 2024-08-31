@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.distancecalculator.distance_calculator_api.convert.DistanceConvert;
 import com.distancecalculator.distance_calculator_api.dto.DistanceCalculatedDto;
-import com.distancecalculator.distance_calculator_api.dto.cepdto.CepConsumerDto;
 import com.distancecalculator.distance_calculator_api.messaging.producer.DistanceCalculatedEvent;
 import com.distancecalculator.distance_calculator_api.models.DistanceModel;
 import com.distancecalculator.distance_calculator_api.repository.DistanceModelRepository;
@@ -29,48 +28,16 @@ public class DistanceModelService {
     }
 
     public void distanceCalculation(UUID orderId) {
-        DistanceModel distanceModel = findByOrderId(orderId);
-        DistanceModel distanceCalculated = processDistance.calculateAndProcessDistance(distanceModel);
-        DistanceModel distanceModeSaved = saveDistanceAndUnit(orderId, distanceCalculated);
-        DistanceCalculatedDto distanceModelDto = distanceConvert.toDistanceDTO(distanceModeSaved);
-        distanceCalculatedEvent.freightCalculate(distanceModelDto);
+        DistanceModel existingDistanceModel = findByOrderId(orderId);
+        DistanceModel distanceCalculated = processDistance.calculateAndProcessDistance(existingDistanceModel);
+        DistanceModel savedDistanceModel = updateDistanceModel(existingDistanceModel, distanceCalculated);
+        sendDistanceCalculatedEvent(savedDistanceModel);
     }
 
-    public void updateCustomerCep(CepConsumerDto cepConsumerDto) {
-        try {
-            DistanceModel distanceModel = findByOrderId(cepConsumerDto.getOrderId());
-            distanceModel.setCustomerCep(cepConsumerDto.getCep());
-            distanceModelRepository.save(distanceModel);
-
-            if (isReadyForCalculation(cepConsumerDto.getOrderId())) {
-                distanceCalculation(cepConsumerDto.getOrderId());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating customer zip code.", e);
-        }
-    }
-
-    public void updateProductCep(CepConsumerDto cepConsumerDto) {
-        try {
-            DistanceModel distanceModel = findByOrderId(cepConsumerDto.getOrderId());
-            distanceModel.setProductCep(cepConsumerDto.getCep());
-            distanceModelRepository.save(distanceModel);
-
-            if (isReadyForCalculation(cepConsumerDto.getOrderId())) {
-                distanceCalculation(cepConsumerDto.getOrderId());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error updating product zip code.", e);
-        }
-    }
-
-    private Boolean isReadyForCalculation(UUID orderId) {
-        DistanceModel distanceModel = findByOrderId(orderId);
-        return areAllCepsReady(distanceModel);
-    }
-
-    private Boolean areAllCepsReady(DistanceModel distanceModel) {
-        return distanceModel.getCustomerCep() != null && distanceModel.getProductCep() != null;
+    private DistanceModel updateDistanceModel(DistanceModel existingDistanceModel, DistanceModel distanceCalculated) {
+        existingDistanceModel.setDistance(distanceCalculated.getDistance());
+        existingDistanceModel.setUnit(distanceCalculated.getUnit());
+        return distanceModelRepository.save(existingDistanceModel);
     }
 
     private DistanceModel findByOrderId(UUID orderId) {
@@ -78,15 +45,12 @@ public class DistanceModelService {
                 .orElseThrow(() -> new RuntimeException("Not Found OrderId: " + orderId));
     }
 
-    public DistanceModel saveDistanceAndUnit(UUID orderId, DistanceModel distanceModel) {
-        DistanceModel distanceModelfind = findByOrderId(orderId);
-        distanceModelfind.setDistance(distanceModel.getDistance());
-        distanceModelfind.setUnit(distanceModel.getUnit());
-        distanceModelRepository.save(distanceModelfind);
-        return distanceModelfind;
+    private void sendDistanceCalculatedEvent(DistanceModel savedDistanceModel) {
+        DistanceCalculatedDto distanceModelDto = distanceConvert.toDistanceDTO(savedDistanceModel);
+        distanceCalculatedEvent.freightCalculate(distanceModelDto);
     }
 
-    public void saveOrderId(UUID orderId) {
+    public void createDistanceModel(UUID orderId) {
         DistanceModel distanceModel = new DistanceModel();
         distanceModel.setOrderId(orderId);
         distanceModelRepository.save(distanceModel);

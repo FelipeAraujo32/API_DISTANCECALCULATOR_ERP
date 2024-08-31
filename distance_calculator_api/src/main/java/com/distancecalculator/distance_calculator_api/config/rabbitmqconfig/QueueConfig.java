@@ -9,23 +9,18 @@ import org.springframework.context.annotation.Configuration;
 public class QueueConfig {
     
     @Bean
-    public Queue customerCepRequestQueue() {
-        return new Queue("customercep.request.queue");
-    }
-
-    @Bean
     public Queue customerCepResponseQueue() {
-        return new Queue("customercep.response.queue");
+        return new Queue("customerzipcode.response.queue");
     }
 
     @Bean
     public Queue productCepRequestQueue() {
-        return new Queue("productcep.request.queue");
+        return new Queue("zipcode.request.queue");
     }
 
     @Bean
     public Queue productCepResponseQueue() {
-        return new Queue("productcep.response.queue");
+        return new Queue("productzipcode.response.queue");
     }
 
     @Bean
