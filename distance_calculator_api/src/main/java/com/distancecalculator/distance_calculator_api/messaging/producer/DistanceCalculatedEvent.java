@@ -17,7 +17,7 @@ public class DistanceCalculatedEvent {
     public void freightCalculate(DistanceCalculatedDto distanceCalculatedDto){
             rabbitTemplate.convertAndSend(
                 "distance.exchange",
-                "freight.calculate.event",
+                "distance.calculate.event",
                 distanceCalculatedDto
             );
     

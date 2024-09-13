@@ -4,6 +4,7 @@ import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,22 +12,22 @@ import org.springframework.context.annotation.Configuration;
 public class BindingConfig {
 
     @Bean
-    public Binding customerCepRequestBinding(Queue customerCepRequestQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(customerCepRequestQueue).to(freightExchange).with("zipcode.request");
+    public Binding zipCodeRequestBinding(@Qualifier("zipCodeRequestQueue") Queue zipCodeRequestBinding, TopicExchange distanceExchange) {
+        return BindingBuilder.bind(zipCodeRequestBinding).to(distanceExchange).with("zipcode.request");
     }
 
     @Bean
-    public Binding customerCepResponseBinding(Queue customerCepResponseQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(customerCepResponseQueue).to(freightExchange).with("customer.zipcode.response");
+    public Binding customerZipCodeResponseBinding(@Qualifier("customerZipCodeResponseQueue") Queue customerZipCodeResponseBinding, TopicExchange distanceExchange) {
+        return BindingBuilder.bind(customerZipCodeResponseBinding).to(distanceExchange).with("customerzipcode.response");
     }
 
     @Bean
-    public Binding productCepResponseBinding(Queue productCepResponseQueue, TopicExchange freightExchange) {
-        return BindingBuilder.bind(productCepResponseQueue).to(freightExchange).with("product.zipcode.response");
+    public Binding productZipCodeResponseBinding(@Qualifier("productZipCodeResponseQueue") Queue productZipCodeResponseBinding, TopicExchange distanceExchange) {
+        return BindingBuilder.bind(productZipCodeResponseBinding).to(distanceExchange).with("productzipcode.response");
     }
 
     @Bean
-    public Binding freightCalculatedBinding(Queue freightCalculated, TopicExchange freightExchange) {
-        return BindingBuilder.bind(freightCalculated).to(freightExchange).with("freight.calculate.event");
+    public Binding freightCalculatedBinding(@Qualifier("freightCalculated")Queue distanceCalculated, TopicExchange distanceExchange) {
+        return BindingBuilder.bind(distanceCalculated).to(distanceExchange).with("distance.calculate.event");
     }
 }

@@ -16,7 +16,7 @@ public class ProductZipCodeConsumer {
         this.zipCodeProcessing = zipCodeProcessing;
     }
 
-    @RabbitListener(queues = "productcep.response.queue")
+    @RabbitListener(queues = "productzipcode.response.queue")
     public void handleProductCepResponse(CepConsumerDto productCepResponseDto) {
         zipCodeProcessing.updateZipCode(productCepResponseDto, CepType.CUSTOMER);
 
