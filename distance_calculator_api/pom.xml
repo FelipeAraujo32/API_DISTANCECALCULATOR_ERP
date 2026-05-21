@@ -11,8 +11,8 @@
 	<groupId>com.distancecalculator</groupId>
 	<artifactId>distance_calculator_api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>distance_calculator_api</name>
-	<description>Demo project for Spring Boot</description>
+	<name>API Distance Calculator ERP</name>
+	<description>Event-driven microservice for calculating order distance in ERP logistics workflows.</description>
 	<url/>
 	<licenses>
 		<license/>
